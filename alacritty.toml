@@ -1,0 +1,24 @@
+[env]
+TERM = "alacritty"
+
+[terminal]
+shell = { program = "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
+#shell = { program = "C:\\msys64\\usr\\bin\\bash.exe", args = ["--login", "-i"] }
+osc52 = "CopyPaste"
+
+[general]
+import = [
+	"C:\\Users\\lemmi\\AppData\\Roaming\\alacritty\\themes\\seoul256-light.toml"
+]
+
+[window]
+padding = { x = 0, y = 0 }
+startup_mode = "Windowed"
+dimensions = { columns = 127, lines = 40 }
+
+[font]
+size = 14
+
+#[terminal]
+#program = "C:/msys64/usr/bin/bash.exe"
+# args = ["--login", "-i"]
