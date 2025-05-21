@@ -1,29 +1,47 @@
 name: Edit README upon branch creation
-run-name: ${{ github.actor }} adjusting README
+run-name: ${{ github.actor }} adjusting README v1.1.1
 on:
-  create
+  create:
+    branches: ['**']
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: 'main'
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Modify README.md
+      - name: Verify branch creation
+        id: check-ref
         run: |
-          echo "![${{ github.ref_name }}](https://github.com/LEMMIIX/masterutils/tree/${{ github.ref_name }})" >> README.md
+          REF_TYPE=$(jq --raw-output .ref_type "$GITHUB_EVENT_PATH")
+          echo "REF_TYPE=${REF_TYPE}" >> $GITHUB_OUTPUT
+
+      - name: Modify README.md
+        if: steps.check-ref.outputs.REF_TYPE == 'branch'
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "- [${BRANCH_NAME}](https://github.com/LEMMIIX/masterutils/tree/${BRANCH_NAME})" >> README.md
+          echo "Branch link added to README.md"
 
       - name: Commit and push changes
+        if: steps.check-ref.outputs.REF_TYPE == 'branch'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "Update README.md" || echo "No changes to commit"
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Update README.md with link to branch ${{ github.ref_name }}"
           git pull --rebase origin main
           git push origin main
