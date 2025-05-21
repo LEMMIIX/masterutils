@@ -8,3 +8,4 @@ collected in one repo  and managed on different branches
 
 - [nvim](https://github.com/LEMMIIX/masterutils/tree/nvim)
 - [reneo](https://github.com/LEMMIIX/masterutils/tree/reneo)
+- [alacritty](https://github.com/LEMMIIX/masterutils/tree/alacritty)
