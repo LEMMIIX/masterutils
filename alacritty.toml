@@ -17,7 +17,8 @@ startup_mode = "Windowed"
 dimensions = { columns = 127, lines = 40 }
 
 [font]
-size = 14
+normal = { family = "Cascadia Mono", style = "Regular" }
+size = 13
 
 #[terminal]
 #program = "C:/msys64/usr/bin/bash.exe"
